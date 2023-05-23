@@ -200,6 +200,12 @@ h1 {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 16px;
   width: fit-content;
+  min-width: 350px;
+}
+
+.search_dropdown {
+  display: flex;
+  padding: 10px;
 }
 
 .search__button {

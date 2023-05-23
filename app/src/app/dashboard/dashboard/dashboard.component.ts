@@ -4,11 +4,7 @@ import {FormControl} from "@angular/forms";
 import {MatSelect} from "@angular/material/select";
 import {take, takeUntil} from "rxjs/operators";
 import {MatAnchor, MatButton, MatButtonModule} from "@angular/material/button";
-
-interface Website {
-  id: string;
-  name: string;
-}
+import {Lister} from "../../api/lister/Lister";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,23 +14,14 @@ interface Website {
 export class DashboardComponent implements OnInit {
   title = 'app-material3';
 
-  protected websites: Website[] = [
-    {id: '1', name: 'ItSolutionStuff.com'},
-    {id: '2', name: 'HDTuto.com'},
-    {id: '3', name: 'Nicesnippets.com'},
-    {id: '4', name: 'Google.com'},
-    {id: '5', name: 'laravel.com'},
-    {id: '6', name: 'npmjs.com'},
-  ];
-
   public websiteCtrl: FormControl = new FormControl();
   public websiteFilterCtrl: FormControl = new FormControl();
   public filteredWebsites: ReplaySubject<any> = new ReplaySubject(1);
-
+  private tickers: any[]= [];
 
   @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect | undefined;
   protected _onDestroy = new Subject();
-  constructor() { }
+  constructor(private listerService: Lister) { }
 
   /**
    * Write code on Method
@@ -42,8 +29,15 @@ export class DashboardComponent implements OnInit {
    * method logical code
    */
   ngOnInit() {
-    this.websiteCtrl.setValue(this.websites[1]);
-    this.filteredWebsites.next(this.websites.slice());
+    console.log("ngOnInit")
+    this.listerService.get().subscribe((data) => {
+      if(data) {
+        console.log(data)
+        this.tickers = data
+      }
+    });
+    this.websiteCtrl.setValue(this.tickers[1]);
+    this.filteredWebsites.next(this.tickers.slice());
 
     this.websiteFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -91,20 +85,20 @@ export class DashboardComponent implements OnInit {
    * method logical code
    */
   protected filterBanks() {
-    if (!this.websites) {
+    if (!this.tickers) {
       return;
     }
 
     let search = this.websiteFilterCtrl.value;
     if (!search) {
-      this.filteredWebsites.next(this.websites.slice());
+      this.filteredWebsites.next(this.tickers.slice());
       return;
     } else {
       search = search.toLowerCase();
     }
 
     this.filteredWebsites.next(
-      this.websites.filter(bank => bank.name.toLowerCase().indexOf(search) > -1)
+      this.tickers.filter(bank => bank.toLowerCase().indexOf(search) > -1)
     );
 
   }

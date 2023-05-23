@@ -105,19 +105,14 @@
             fill="#919EAB" />
     </svg>
     </button>
-    <p class="search__input">
-      <mat-form-field>
-        <mat-select [formControl]="websiteCtrl" placeholder="Bank" #singleSelect>
-          <mat-option>
-            <ngx-mat-select-search [formControl]="websiteFilterCtrl"></ngx-mat-select-search>
-          </mat-option>
+      <mat-select [formControl]="websiteCtrl" placeholder="Bank"  #singleSelect class="search_dropdown">
+        <ngx-mat-select-search placeholderLabel="Search value.. " noEntriesFoundLabel="! No matches found !" [formControl]="websiteFilterCtrl"></ngx-mat-select-search>
 
-          <mat-option *ngFor="let website of filteredWebsites | async" [value]="website">
-            {{website.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </p>
+        <mat-option *ngFor="let ticker of filteredWebsites | async" [value]="ticker">
+          {{ ticker }}
+        </mat-option>
+      </mat-select>
+
   </div>
   <div class="bg-primary flex flex-justify-between flex-align-center banner">
     <div>
