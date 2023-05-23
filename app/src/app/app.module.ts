@@ -10,6 +10,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from "@angular/material/icon";
+
 
 @NgModule({
   declarations: [
@@ -25,7 +29,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatSelectModule,
     MatButtonModule,
     MatFormFieldModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
