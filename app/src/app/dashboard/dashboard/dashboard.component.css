@@ -595,3 +595,14 @@ h1 {
     transform: translateX(-130%);
   }
 }
+
+.btn-linkedin {
+  text-decoration: none;
+}
+
+.btn-linkedin:link, .btn-linkedin:visited {
+  color: #fff;
+}
+.btn-linkedin:hover {
+  color: black;
+}

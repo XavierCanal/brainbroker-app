@@ -8,10 +8,17 @@ import {Injectable} from "@angular/core";
 })
 export class Lister {
   constructor(private http:HttpClient) {}
-  get():Observable<any> {
+  get_symbols(ticker = ""):Observable<any> {
+    const headers = new HttpHeaders()
+    return this.http.get(`${environment.urlApi}binance/getSymbols${ticker}`, {
+      headers: headers
+    })
+  }
+
+  get_tickers(ticker = ""):Observable<any> {
     console.log("get" + environment.urlApi)
     const headers = new HttpHeaders()
-    return this.http.get(`${environment.urlApi}binance/getSymbols/ETHBTC`, {
+    return this.http.get(`${environment.urlApi}tickerList/getTickers${ticker}`, {
       headers: headers
     })
   }

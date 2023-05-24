@@ -11,13 +11,15 @@ import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
+import { ChartComponent } from './dashboard/chart/chart/chart.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
