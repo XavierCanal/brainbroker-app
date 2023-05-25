@@ -12,6 +12,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
 import { ChartComponent } from './dashboard/chart/chart/chart.component';
+import { ForecastComponent } from './dashboard/chart/forecast/forecast/forecast.component';
 
 
 
@@ -19,7 +20,8 @@ import { ChartComponent } from './dashboard/chart/chart/chart.component';
   declarations: [
     AppComponent,
     DashboardComponent,
-    ChartComponent
+    ChartComponent,
+    ForecastComponent
   ],
   imports: [
     BrowserModule,

@@ -606,3 +606,9 @@ h1 {
 .btn-linkedin:hover {
   color: black;
 }
+
+.selected-ticker {
+  margin-left: 100px;
+  margin-top: 15px;
+  text-decoration: overline;
+}

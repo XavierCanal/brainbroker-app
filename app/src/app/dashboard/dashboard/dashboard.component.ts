@@ -8,6 +8,7 @@ import {Lister} from "../../api/lister/Lister";
 import * as Highcharts from 'highcharts';
 import HC_stock from 'highcharts/modules/stock';
 import {Chart} from "../../api/chart/Chart";
+import {Stock} from "../../api/stock/stock";
 HC_stock(Highcharts);
 
 @Component({
@@ -25,11 +26,16 @@ export class DashboardComponent implements OnInit {
   public chartData?: any[][];
   public info?: {"end_date": string, "start_date": string, "ticker": string, "interval": string};
 
+  public previousElement?: HTMLElement;
+  public selectedTicker: string = "";
+
   @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect | undefined;
   protected _onDestroy = new Subject();
+  public forecastData: string = "";
   constructor(
     private listerService: Lister,
-    private chartService: Chart
+    private chartService: Chart,
+    private stockService: Stock
   ) { }
 
   /**
@@ -57,8 +63,10 @@ export class DashboardComponent implements OnInit {
     });
 
   }
+
   selectChart(value: any) {
     this.chartData = undefined;
+    this.selectedTicker = value;
     this.chartService.get_candlestick(value).subscribe((data) => {
       console.log(data)
       if(data) {
@@ -74,6 +82,12 @@ export class DashboardComponent implements OnInit {
       console.log("Chart" + this.chartData);
     });
 
+  }
+
+  selectChartForecast() {
+    this.chartService.get_forecast_with_news(this.selectedTicker).subscribe((data) => {
+      this.forecastData = data
+    });
   }
 
   /**
@@ -132,13 +146,21 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  public previousElement?: HTMLElement;
-
   updateSelectedIndex(elem: HTMLElement) {
     if(this.previousElement) {
       this.previousElement.className = "nav__menu flex flex-align-center"
     }
     elem.className = "nav__menu active flex flex-align-center"
     this.previousElement = elem;
+  }
+
+  updateTicker() {
+    if(this.selectedTicker) {
+      this.stockService.aggregate(this.selectedTicker).subscribe((data) => {
+        if(data) {
+          this.selectChart(this.selectedTicker);
+        }
+      });
+    }
   }
 }
