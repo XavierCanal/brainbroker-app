@@ -9,6 +9,8 @@ import * as Highcharts from 'highcharts';
 import HC_stock from 'highcharts/modules/stock';
 import {Chart} from "../../api/chart/Chart";
 import {Stock} from "../../api/stock/stock";
+import {DomSanitizer} from "@angular/platform-browser";
+import {News} from "../news/news";
 HC_stock(Highcharts);
 
 @Component({
@@ -28,14 +30,21 @@ export class DashboardComponent implements OnInit {
 
   public previousElement?: HTMLElement;
   public selectedTicker: string = "";
+  public loadingChart: boolean = false;
+
+  public news?: {status:string,totalResults:number,articles:[{source:{id:string,name:string},
+      author:string,title:string,description:string,url:string,urlToImage:string,publishedAt:string,content:string}]};
+  // articles_evaluation contain an array of {"value": 1, "conclusion": "text with conclusion"}
+  public articles_evaluation?: [{ article: { value: number, conclusion: string } }];
 
   @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect | undefined;
   protected _onDestroy = new Subject();
-  public forecastData: string = "";
+  public forecastData: any;
   constructor(
     private listerService: Lister,
     private chartService: Chart,
-    private stockService: Stock
+    private stockService: Stock,
+    private newsService: News
   ) { }
 
   /**
@@ -66,9 +75,9 @@ export class DashboardComponent implements OnInit {
 
   selectChart(value: any) {
     this.chartData = undefined;
+    this.forecastData = undefined;
     this.selectedTicker = value;
     this.chartService.get_candlestick(value).subscribe((data) => {
-      console.log(data)
       if(data) {
            this.chartData = data.candlesticks.map((candlestick: { date: string | number | Date; open: any; high: any; low: any; close: any; }) => [
             new Date(candlestick.date).getTime(),
@@ -79,14 +88,32 @@ export class DashboardComponent implements OnInit {
           ]);
            this.info = data.info
         }
-      console.log("Chart" + this.chartData);
     });
+    this.newsService.get_actual_news(value).subscribe((data) => {
+      if (data.result && data.evaluation) {
+        console.log(data);
+        this.news = JSON.parse(data.result);
+
+        try {
+          this.articles_evaluation = JSON.parse(data.evaluation);
+          console.log(this.articles_evaluation)
+          // @ts-ignore
+          console.log(this.articles_evaluation[0])
+        } catch (error) {
+          console.log('Error parsing data.evaluation:', error);
+        }
+      }
+    });
+
 
   }
 
   selectChartForecast() {
+    this.loadingChart = true;
     this.chartService.get_forecast_with_news(this.selectedTicker).subscribe((data) => {
-      this.forecastData = data
+      console.log(typeof data.fig)
+      this.forecastData = JSON.parse(data.fig)
+      this.loadingChart = false;
     });
   }
 

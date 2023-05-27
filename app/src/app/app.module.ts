@@ -13,9 +13,10 @@ import {MatIconModule} from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
 import { ChartComponent } from './dashboard/chart/chart/chart.component';
 import { ForecastComponent } from './dashboard/chart/forecast/forecast/forecast.component';
+import { PlotlyModule } from 'angular-plotly.js';
+import * as PlotlyJS from 'plotly.js-dist-min';
 
-
-
+PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { ForecastComponent } from './dashboard/chart/forecast/forecast/forecast.
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    HttpClientModule
+    HttpClientModule,
+    PlotlyModule
   ],
   providers: [],
   bootstrap: [AppComponent]

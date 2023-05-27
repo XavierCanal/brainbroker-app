@@ -148,11 +148,16 @@
       </button>
     </ng-container>
 
-    <app-forecast *ngIf="forecastData && previousElement?.id === 'forecast'" [data]="forecastData" [info]="info"></app-forecast>
+    <app-forecast *ngIf="forecastData && previousElement?.id === 'forecast'" [fig]="forecastData" [info]="info"></app-forecast>
     <ng-container *ngIf="!forecastData && selectedTicker && previousElement?.id === 'forecast'">
       <h2 class="text-gray-500">
         Warning: This action can take a while...
       </h2>
+      <ng-container *ngIf="!forecastData && selectedTicker && loadingChart">
+        <div class="cssload-container">
+          <div class="cssload-speeding-wheel"></div>
+        </div>
+      </ng-container>
       <button class="button linked-button bg-secondary text-white py-4 px-8">
         <a class="btn-linkedin" href="#" (click)="selectChartForecast()">
           <i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;&nbsp;&nbsp;Update Ticker
@@ -162,7 +167,7 @@
 
   </div>
 </section>
-<section class="section__account">
+<section class="section__account" style="max-width:700px; min-width: 500px">
   <div class="flex flex-align-center flex-justify-between mb-8 option">
     <div class="notif">
       <svg width="32" height="32" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -187,131 +192,32 @@
       </svg>
     </div>
   </div>
-  <h2 class="text-2xl mb-4">Accounts</h2>
-  <div class="card flex flex-align-center flex-justify-center flex-column mb-4">
-    <h2 class="text-2xl text-white text-bold mb-2">$1,445,000</h2>
-    <p class="text-bold text-white flex flex-align-center">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
-           class="rotate-180">
-        <path
-          d="M10.869 16.6308C10.811 16.5743 10.563 16.3609 10.359 16.1622C9.076 14.9971 6.976 11.9576 6.335 10.3668C6.232 10.1252 6.014 9.51437 6 9.18802C6 8.8753 6.072 8.5772 6.218 8.29274C6.422 7.93814 6.743 7.65368 7.122 7.49781C7.385 7.39747 8.172 7.2416 8.186 7.2416C9.047 7.08573 10.446 7 11.992 7C13.465 7 14.807 7.08573 15.681 7.21335C15.695 7.22796 16.673 7.38383 17.008 7.55431C17.62 7.86702 18 8.47784 18 9.13151V9.18802C17.985 9.61374 17.605 10.509 17.591 10.509C16.949 12.0141 14.952 14.9834 13.625 16.1768C13.625 16.1768 13.284 16.5129 13.071 16.659C12.765 16.887 12.386 17 12.007 17C11.584 17 11.19 16.8724 10.869 16.6308Z"
-          fill="white" />
-      </svg>
-      $32 (2%)
-    </p>
-  </div>
-  <div class="flex flex-align-center flex-justify-between mb-8">
-    <button class="button bg-primary text-white flex flex-align-center px-4 py-4">
-      <svg width="12" height="18" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-        <path
-          d="M5.99339 7.83503C7.46503 7.83503 8.80668 7.92121 9.68129 8.05103C9.6835 8.05305 9.70532 8.05804 9.7421 8.06561L9.99273 8.11578C10.3127 8.18079 10.7934 8.28643 11.0086 8.39793C11.6211 8.71539 12 9.33611 12 10.0005V10.0583C11.9857 10.4914 11.6057 11.4012 11.5924 11.4012C10.9502 12.9317 8.95319 15.9491 7.62585 17.1622L7.58042 17.207C7.48045 17.3048 7.23713 17.5377 7.07178 17.6531C6.76556 17.8844 6.38663 18 6.00771 18C5.58473 18 5.19148 17.8702 4.86984 17.6247C4.81146 17.5669 4.56471 17.3509 4.35983 17.148C3.07656 15.9644 0.978153 12.8739 0.335965 11.2572C0.233523 11.0117 0.0154213 10.391 0 10.0583C0 9.74083 0.0738021 9.43756 0.219203 9.14847C0.422985 8.78738 0.74463 8.49939 1.12355 8.34012C1.38572 8.23866 2.17331 8.07939 2.18763 8.07939C3.04792 7.92121 4.44685 7.83503 5.99339 7.83503ZM6.00044 0C6.8387 0 7.51834 0.673083 7.51834 1.50325L7.19119 5.20248C7.19119 5.85375 6.65805 6.38174 6.00044 6.38174C5.34173 6.38174 4.80969 5.85375 4.80969 5.20248L4.48254 1.50325C4.48254 0.673083 5.16218 0 6.00044 0Z"
-          fill="white" />
-      </svg><span>Deposit</span>
-    </button>
-    <button class="button bg-secondary text-white flex flex-align-center px-4 py-4">
-      <svg width="12" height="18" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-        <path
-          d="M6.3607 10.1634L6.00661 10.165C4.53497 10.165 3.19332 10.0788 2.31871 9.94897L1.77483 9.83524C1.48678 9.77197 1.1588 9.68879 0.991371 9.60207C0.378924 9.28461 0 8.66389 0 7.99954V7.94172C0.0143198 7.50864 0.394346 6.59883 0.407564 6.59883C1.02183 5.13485 2.87572 2.31046 4.19739 1.006L4.59419 0.626929C4.70173 0.527664 4.82901 0.41614 4.92822 0.346905C5.23444 0.115635 5.61337 0 5.99229 0C6.41527 0 6.80852 0.129817 7.13016 0.375268L7.55047 0.764728L7.64017 0.85199C8.92344 2.03561 11.0218 5.12612 11.664 6.74283L11.7576 6.98692C11.8629 7.28064 11.9884 7.69218 12 7.94172C12 8.25917 11.9262 8.56244 11.7808 8.85153C11.577 9.21262 11.2554 9.50061 10.8764 9.65988C10.6143 9.76134 9.82669 9.92061 9.81237 9.92061C9.01826 10.0666 7.76518 10.1513 6.3607 10.1634ZM5.99956 18C5.1613 18 4.48166 17.3269 4.48166 16.4967L4.80881 12.7975C4.80881 12.1463 5.34195 11.6183 5.99956 11.6183C6.65827 11.6183 7.19031 12.1463 7.19031 12.7975L7.51746 16.4967C7.51746 17.3269 6.83782 18 5.99956 18Z"
-          fill="white" />
-      </svg>
-      <span>Withdraw</span>
-    </button>
-  </div>
-  <h2 class="text-2xl mt-6 mb-4">Recent Transactions</h2>
+  <h2 class="text-2xl mt-6 mb-4">Recent News</h2>
   <div class="transactions">
-    <div class="transaction flex flex-align-center flex-justify-between mb-4">
+      <ng-container *ngIf="!news && selectedTicker">
+        <div class="cssload-container">
+          <div class="cssload-speeding-wheel"></div>
+        </div>
+      </ng-container>
+    <div class="transaction flex flex-align-center flex-justify-between mb-4" *ngFor="let article of news?.articles; let i = index">
       <div class="flex flex-align-center flex-justify-between">
-        <svg width="48" height="48" viewBox="20 20 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-          <g filter="url(#filter0_d_1_55)">
-            <rect x="20" y="20" width="48" height="48" rx="16" fill="#EF8E19" />
-          </g>
-          <path
-            d="M40.25 51.5V53.375C40.25 53.582 40.418 53.75 40.625 53.75H42.125C42.2245 53.75 42.3198 53.7105 42.3902 53.6402C42.4605 53.5698 42.5 53.4745 42.5 53.375V51.5H43.25V53.375C43.25 53.582 43.418 53.75 43.625 53.75H45.125C45.2245 53.75 45.3198 53.7105 45.3902 53.6402C45.4605 53.5698 45.5 53.4745 45.5 53.375V51.5H45.626C48.614 51.5 50.75 49.9505 50.75 47.27C50.75 45.017 49.2395 43.7855 47.471 43.61V43.478C48.926 43.115 49.9955 42.017 49.9955 40.193C49.9955 37.895 48.2705 36.5 45.638 36.5H45.5V34.625C45.5 34.5255 45.4605 34.4302 45.3902 34.3598C45.3198 34.2895 45.2245 34.25 45.125 34.25H43.625C43.5255 34.25 43.4302 34.2895 43.3598 34.3598C43.2895 34.4302 43.25 34.5255 43.25 34.625V36.5H42.3905V34.625C42.3905 34.5255 42.351 34.4302 42.2807 34.3598C42.2103 34.2895 42.115 34.25 42.0155 34.25H40.625C40.5255 34.25 40.4302 34.2895 40.3598 34.3598C40.2895 34.4302 40.25 34.5255 40.25 34.625V36.5L37.253 36.5165C37.1535 36.5165 37.0582 36.556 36.9878 36.6263C36.9175 36.6967 36.878 36.792 36.878 36.8915V38.375C36.878 38.5805 37.043 38.75 37.25 38.75L38.3825 38.7425C38.6796 38.7445 38.9638 38.8639 39.1732 39.0746C39.3825 39.2854 39.5 39.5704 39.5 39.8675V48.125C39.5 48.4234 39.3815 48.7095 39.1705 48.9205C38.9595 49.1315 38.6734 49.25 38.375 49.25L37.253 49.2665C37.1535 49.2665 37.0582 49.306 36.9878 49.3763C36.9175 49.4467 36.878 49.542 36.878 49.6415V51.1415C36.878 51.3485 37.046 51.5165 37.253 51.5165L40.25 51.5ZM42.3905 38.7305H44.969C46.328 38.7305 47.126 39.4775 47.126 40.6985C47.126 42.005 46.2635 42.7415 44.3105 42.7415H42.3905V38.7305ZM42.3905 44.807H45.1505C46.856 44.807 47.7845 45.677 47.7845 47.093C47.7845 48.5225 46.8455 49.268 44.5475 49.268H42.3905V44.8085V44.807Z"
-            fill="white" />
-          <defs>
-            <filter id="filter0_d_1_55" x="0" y="0" width="88" height="88" filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                             result="hardAlpha" />
-              <feOffset />
-              <feGaussianBlur stdDeviation="10" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.5586 0 0 0 0 0.560629 0 0 0 0 0.57 0 0 0 0.04 0" />
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_55" />
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_55" result="shape" />
-            </filter>
-          </defs>
-        </svg>
         <div>
-          <p class="text-bold">Bitcoin Buy</p>
-          <small class="text-bold text-gray-500">Today</small>
+          <p class="text-bold">{{article.title}}</p>
+          <small class="text-bold text-gray-500">{{article.publishedAt}}</small>
         </div>
       </div>
-      <p class="text-bold text-success">+2.05 BTC</p>
-    </div>
-    <div class="transaction flex flex-align-center flex-justify-between mb-4">
-      <div class="flex flex-align-center flex-justify-between">
-        <svg width="48" height="48" viewBox="20 20 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-          <g filter="url(#filter0_d_117_77)">
-            <rect x="20" y="20" width="48" height="48" rx="16" fill="#636890" />
-          </g>
-          <path
-            d="M52.8406 43.5407L44.5906 33.0407C44.5205 32.9511 44.4308 32.8786 44.3285 32.8287C44.2262 32.7788 44.1138 32.7529 44 32.7529C43.8862 32.7529 43.7738 32.7788 43.6715 32.8287C43.5692 32.8786 43.4795 32.9511 43.4094 33.0407L35.1594 43.5407C35.0544 43.6708 34.9971 43.8329 34.9971 44.0001C34.9971 44.1672 35.0544 44.3294 35.1594 44.4594L43.4094 54.9594C43.4795 55.0491 43.5692 55.1216 43.6715 55.1714C43.7738 55.2213 43.8862 55.2472 44 55.2472C44.1138 55.2472 44.2262 55.2213 44.3285 55.1714C44.4308 55.1216 44.5205 55.0491 44.5906 54.9594L52.8406 44.4594C52.9456 44.3294 53.0029 44.1672 53.0029 44.0001C53.0029 43.8329 52.9456 43.6708 52.8406 43.5407ZM44.75 35.6657L51.0687 43.7094L44.75 46.5876V35.6657ZM43.25 46.5876L36.9312 43.7094L43.25 35.6657V46.5876ZM43.25 48.2376V52.3344L38.2437 45.9594L43.25 48.2376ZM44.75 48.2376L49.7562 45.9594L44.75 52.3344V48.2376Z"
-            fill="white" />
-          <defs>
-            <filter id="filter0_d_117_77" x="0" y="0" width="88" height="88" filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                             result="hardAlpha" />
-              <feOffset />
-              <feGaussianBlur stdDeviation="10" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.5586 0 0 0 0 0.560629 0 0 0 0 0.57 0 0 0 0.04 0" />
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_117_77" />
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_117_77" result="shape" />
-            </filter>
-          </defs>
-        </svg>
-        <div>
-          <p class="text-bold">Ethereum Sell</p>
-          <small class="text-bold text-gray-500">2 days ago</small>
+      <p style="max-width: 500px; padding-left: 15px; align-self: flex-start;" class="text-bold text-success">{{article.description}}</p>
+      <div class="ticket-icon">
+        <div class="ticket-label">
+          <ng-container *ngIf="articles_evaluation && articles_evaluation.length > i">
+            <div class="description">{{ articles_evaluation[i].article.conclusion }}</div>
+            <div class="value">{{ articles_evaluation[i].article.value }}</div>
+          </ng-container>
         </div>
+        <i class="fas fa-info-circle icon"></i>
       </div>
-      <p class="text-bold text-error">+3.05 ETH</p>
     </div>
-    <div class="transaction flex flex-align-center flex-justify-between mb-4">
-      <div class="flex flex-align-center flex-justify-between">
-        <svg width="48" height="48" viewBox="20 20 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
-          <g filter="url(#filter0_d_117_77)">
-            <rect x="20" y="20" width="48" height="48" rx="16" fill="#636890" />
-          </g>
-          <path
-            d="M52.8406 43.5407L44.5906 33.0407C44.5205 32.9511 44.4308 32.8786 44.3285 32.8287C44.2262 32.7788 44.1138 32.7529 44 32.7529C43.8862 32.7529 43.7738 32.7788 43.6715 32.8287C43.5692 32.8786 43.4795 32.9511 43.4094 33.0407L35.1594 43.5407C35.0544 43.6708 34.9971 43.8329 34.9971 44.0001C34.9971 44.1672 35.0544 44.3294 35.1594 44.4594L43.4094 54.9594C43.4795 55.0491 43.5692 55.1216 43.6715 55.1714C43.7738 55.2213 43.8862 55.2472 44 55.2472C44.1138 55.2472 44.2262 55.2213 44.3285 55.1714C44.4308 55.1216 44.5205 55.0491 44.5906 54.9594L52.8406 44.4594C52.9456 44.3294 53.0029 44.1672 53.0029 44.0001C53.0029 43.8329 52.9456 43.6708 52.8406 43.5407ZM44.75 35.6657L51.0687 43.7094L44.75 46.5876V35.6657ZM43.25 46.5876L36.9312 43.7094L43.25 35.6657V46.5876ZM43.25 48.2376V52.3344L38.2437 45.9594L43.25 48.2376ZM44.75 48.2376L49.7562 45.9594L44.75 52.3344V48.2376Z"
-            fill="white" />
-          <defs>
-            <filter id="filter0_d_117_77" x="0" y="0" width="88" height="88" filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                             result="hardAlpha" />
-              <feOffset />
-              <feGaussianBlur stdDeviation="10" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0.5586 0 0 0 0 0.560629 0 0 0 0 0.57 0 0 0 0.04 0" />
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_117_77" />
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_117_77" result="shape" />
-            </filter>
-          </defs>
-        </svg>
-        <div>
-          <p class="text-bold">Ethereum Buy</p>
-          <small class="text-bold text-gray-500">3 days ago</small>
-        </div>
-      </div>
-      <p class="text-bold text-success">+1.05 ETH</p>
-    </div>
+
   </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"
