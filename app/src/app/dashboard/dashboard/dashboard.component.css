@@ -441,6 +441,14 @@ h1 {
   color: #6DD64D;
 }
 
+.text-wrong {
+  color: red;
+}
+
+.text-standard {
+  color: grey;
+}
+
 .text-gray-500 {
   color: #919EAB;
 }

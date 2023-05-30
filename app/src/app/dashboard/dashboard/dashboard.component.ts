@@ -31,6 +31,9 @@ export class DashboardComponent implements OnInit {
   public previousElement?: HTMLElement;
   public selectedTicker: string = "";
   public loadingChart: boolean = false;
+  public fc_components: any;
+  public cross_validation: any;
+  public forecast_st: any;
 
   public news?: {status:string,totalResults:number,articles:[{source:{id:string,name:string},
       author:string,title:string,description:string,url:string,urlToImage:string,publishedAt:string,content:string}]};
@@ -105,16 +108,38 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-
   }
 
   selectChartForecast() {
     this.loadingChart = true;
     this.chartService.get_forecast_with_news(this.selectedTicker).subscribe((data) => {
-      console.log(typeof data.fig)
       this.forecastData = JSON.parse(data.fig)
       this.loadingChart = false;
     });
+  }
+
+  getForecastComponents() {
+    this.loadingChart = true;
+    this.chartService.get_forecast_components(this.selectedTicker).subscribe((data) => {
+      this.fc_components = data
+      this.loadingChart = false;
+    })
+  }
+
+  getCrossValidation() {
+    this.loadingChart = true;
+    this.chartService.get_cross_validation(this.selectedTicker).subscribe((data) => {
+      this.cross_validation = data
+      this.loadingChart = false;
+    })
+  }
+
+  getStandardForecast() {
+    this.loadingChart = true;
+    this.chartService.get_standard_forecast(this.selectedTicker).subscribe((data) => {
+      this.forecast_st = data
+      this.loadingChart = false;
+    })
   }
 
   /**

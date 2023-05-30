@@ -15,6 +15,9 @@ import { ChartComponent } from './dashboard/chart/chart/chart.component';
 import { ForecastComponent } from './dashboard/chart/forecast/forecast/forecast.component';
 import { PlotlyModule } from 'angular-plotly.js';
 import * as PlotlyJS from 'plotly.js-dist-min';
+import { ForecastComponentsComponent } from './dashboard/chart/forecast/forecast-components/forecast-components/forecast-components.component';
+import {NgOptimizedImage} from "@angular/common";
+import { ForecastImageComponent } from './dashboard/chart/forecast/forecast-image/forecast-image/forecast-image.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
@@ -22,21 +25,25 @@ PlotlyModule.plotlyjs = PlotlyJS;
     AppComponent,
     DashboardComponent,
     ChartComponent,
-    ForecastComponent
+    ForecastComponent,
+    ForecastComponentsComponent,
+    ForecastImageComponent,
+    ForecastImageComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    NgxMatSelectSearchModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    HttpClientModule,
-    PlotlyModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        NgxMatSelectSearchModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        HttpClientModule,
+        PlotlyModule,
+        NgOptimizedImage
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
